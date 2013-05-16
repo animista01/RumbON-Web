@@ -7,6 +7,7 @@
  * @author   Taylor Otwell <taylorotwell@gmail.com>
  * @link     http://laravel.com
  */
+error_reporting(E_ERROR | E_WARNING |E_PARSE | E_NOTICE);
 
 // --------------------------------------------------------------
 // Tick... Tock... Tick... Tock...
