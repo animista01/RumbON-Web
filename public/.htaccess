@@ -9,8 +9,12 @@
 # features. "+FollowSymLinks" must be enabled for this to work symbolically.
 
 <IfModule mod_rewrite.c>
-	Options +FollowSymLinks
+	#Options +FollowSymLinks
 	RewriteEngine On
+
+	# PATH_INFO workaround
+	RewriteCond %{REQUEST_URI} \.php/ [NC]
+	RewriteRule ^(.*)\.php/(.*)$	/$1.php [NC,L,QSA,E=PATH_INFO:"/$2"]
 </IfModule>
 
 # For all files not found in the file system, reroute the request to the
