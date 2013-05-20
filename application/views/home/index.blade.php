@@ -3,7 +3,7 @@
 <div class="span8 offset2">
     <div class="row artwork hidden-phone" style="font-size:80px; text-align: center;">
 		<div class="masthead">
-			<h1>Discotecas<h1>
+			<h1>RumbON<h1>
 		</div>
 	</div>
 	<hr />
@@ -24,14 +24,14 @@
 		<div class="span4">
 			<p class="lead">¿Aun no te registras? Regístrate!</p>
 			@if (Session::has('error_register'))
-		            {{ Alert::error("Error al registrate") }}
-		       @endif
+	            {{ Alert::error("Error al registrate") }}
+		    @endif
 			{{ Form::open_for_files('/', 'POST',array('class'=>'well')); }}
 
 			{{ Form::token(); }}
 
 			{{ $errors->first('name', Alert::error(":message")) }}
-			{{ Form::text('name', Input::old('name'), array('class' => 'span3', 'placeholder' => 'Nombre'));}}
+			{{ Form::text('name', Input::old('name'), array('class' => 'span3', 'placeholder' => 'Nombre completo'));}}
 			
 			{{ $errors->first('email', Alert::error(":message")) }}
 			{{ Form::text('email', Input::old('email'), array('class' => 'span3', 'placeholder' => 'Email'));}}
@@ -42,16 +42,13 @@
 			{{ $errors->first('telephone', Alert::error(":message")) }}
 			{{ Form::text('telephone', Input::old('telephone'), array('class' => 'span3', 'placeholder' => 'Telefono'));}}
 
-			{{ $errors->first('musictype', Alert::error(":message")) }}
-			{{ Form::text('musictype', Input::old('musictype'), array('class' => 'span3', 'placeholder' => 'Tipo de Musica'));}}
-
 			{{ $errors->first('image', Alert::error(":message")) }}
 			{{ Form::file('image'); }}
 
 			{{ $errors->first('password', Alert::error(":message")) }}
 			{{ Form::password('nuevo_password', array('class' => 'span3', 'placeholder' => 'Contraseña'));}}
 			
-			{{ Form::submit('Regístrate', array('class'=>'btn-primary'));}}
+			{{ Form::submit('Regístrate', array('class'=>'btn-success'));}}
 			{{ Form::close() }}
 		</div>
 	</div>

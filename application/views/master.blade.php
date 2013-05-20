@@ -5,18 +5,19 @@
 	<title>RumbON</title>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	{{ HTML::style('css/bootstrap.css') }}
-  	{{ HTML::style('css/bootstrap-responsive.css') }}
-  	<style>
-      .artwork {
-        margin-top:30px;
-        margin-bottom: 30px;
-      }
-      .masthead h1{
-        font-size: 120px;
-        line-height: 1;
-        letter-spacing: -2px;
-      }
-    </style>
+	{{ HTML::style('css/bootstrap-responsive.css') }}
+	<style>
+    .artwork {
+      margin-top:30px;
+      margin-bottom: 30px;
+    }
+    .masthead h1{
+      font-size: 120px;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+  </style>
+  {{ HTML::style('css/onoff.css') }}
 </head>
 <body>
 	
@@ -28,7 +29,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="{{ URL::base(); }}">RumbON</a>
+          @if (Auth::guest())
+            <a class="brand" href="{{ URL::base(); }}">RumbON</a>
+          @else
+            <a class="brand" href="{{ URL::base(); }}/user/index">RumbON</a>
+          @endif
           <div class="nav-collapse">
             <ul class="nav pull-right">
               @if (Auth::guest())
@@ -48,12 +53,12 @@
              	<li class="divider-vertical"></li>
                 <li class="dropdown visible-desktop">
                 	<a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                		{{ Auth::user()->name }} 
+                		{{ e(Auth::user()->name) }} 
                 		<strong class="caret"></strong>
                 	</a>
 	               	<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-						<ul style="list-style: none;">
-							<li>{{ HTML::link_to_action('user@configUser', 'Configurar Perfil') }}</li>
+						        <ul style="list-style: none;">
+				              <li>{{ HTML::link_to_action('user@configUser', 'Configurar Perfil') }}</li>
 			              	<li>{{ HTML::link_to_action('home@logout', 'Salir') }}</li>
 		              	</ul>
 		            </div>
@@ -61,9 +66,12 @@
               @endif
             </ul>
             <ul class="nav">
-              <li class="active"><a href="{{URL::base();}}">Inicio</a></li>
+              @if (Auth::guest())
+                <li class="active"><a href="{{URL::base();}}">Inicio</a></li>
+              @endif
               @if (!Auth::guest())
-                <li>{{ HTML::link_to_action('user@index', "Perfil") }} </li>
+              <li class="active"><a href="{{URL::base();}}/user/index">Inicio</a></li>
+                <li>{{ HTML::link_to_action('user@profile', "Perfil") }} </li>
               @endif
             </ul>
           </div><!--/.nav-collapse -->

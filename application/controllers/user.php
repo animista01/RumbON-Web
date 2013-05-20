@@ -9,8 +9,32 @@ class User_Controller extends Base_Controller {
 	}
 	public function get_index()
     {
-    	return View::make('user.index');
+    	$discotecas_Usu = Club::where('user_id','=',Auth::user()->id)->first();
+    	$restaurantes_Usu = Restaurant::where('user_id','=',Auth::user()->id)->first();
+    	return View::make('user.index')
+    		->with('club', $discotecas_Usu)
+    		->with('restaurant', $restaurantes_Usu);
     }    
+    public function get_profile()
+	{
+		return View::make('user.profile');
+	}
+
+	public function get_adminrestaurant($id)
+	{
+		$restaurante_Usu = Restaurant::where('user_id','=',Auth::user()->id);
+		$restaurante_Usu = $restaurante_Usu->where('id','=',$id)->first();
+		return View::make('user.restaurante')
+			->with('restaurant', $restaurante_Usu);
+	}
+	public function get_adminclub($id)
+	{
+		$discoteca_Usu = Club::where('user_id','=',Auth::user()->id);
+		$discoteca_Usu = $discoteca_Usu->where('id','=',$id)->first();
+		return View::make('user.discoteca')
+			->with('club', $discoteca_Usu);
+	}
+
     public function get_configUser()
     {
     	return View::make('user.configUser');
@@ -18,7 +42,7 @@ class User_Controller extends Base_Controller {
     public function post_configUser()
     {
     	$rules = array(
-            'image' => 'image|mimes:jpg,png,jgeg|max:1024',
+            'image' => 'image|mimes:jpg,png|max:1024',
         );
  
         $validation = Validator::make(Input::file('image'), $rules);
