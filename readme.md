@@ -1,4 +1,4 @@
-# [RumbON- Web](http://rumbon.pagodabox.com/)
+# [RumbON - Web](http://rumbon.pagodabox.com/)
 
 Proyecto hecho en Laravel 3 para la 2da convocatoria de AppsCo B/quilla
 
