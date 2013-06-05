@@ -8,10 +8,12 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
 
+.jumbotron{
+  text-align: center;
+}
 .clearfix {
   *zoom: 1;
 }
-
 .clearfix:before,
 .clearfix:after {
   display: table;

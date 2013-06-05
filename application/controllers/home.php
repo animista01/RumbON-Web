@@ -29,18 +29,18 @@ class Home_Controller extends Base_Controller {
 	{
 		$new_user = array(
 	        'name'		=> Input::get('name'),
-	        'bio'  => Input::get('bio'),
 	        'telephone'  => Input::get('telephone'),
 	        'email'  => Input::get('email'),
+	        'type'=> Input::get('type'),
 	        'image' => Input::file('image'),
 	        'password'  => Input::get('nuevo_password')
     	);
    
     	$rules = array(
 	        'name' => 'required|match:/[a-z]+/|min:3|max:20',
-	        'bio' => 'required|match:/[a-z]+/|min:8|max:200',
 	        'telephone' => 'required|numeric',
 	        'email' => 'required|unique:users|email',
+	        'type' => 'required',
 	        'image' => 'required|image|mimes:jpg,png|max:1024',
 	        'password' => 'required|min:5|max:60'
     	);
@@ -57,12 +57,46 @@ class Home_Controller extends Base_Controller {
 	    }
 	    $new_user['password'] = Hash::make($new_user['password']);
 
+	    //convertir de string a int el tipo de usuario elegido 
+	    if (Input::get('type') == 'rumbon') {
+	    	$tipo = 1;
+	    }elseif(Input::get('type') == 'adminDisco'){
+	    	$tipo = 2;
+	    }elseif(Input::get('type') == 'adminRest'){
+	    	$tipo = 3;
+	    }
+
 	    // create a random name
-		$filename = Str::random(20) .'.'. File::extension(Input::file('image.name'));
- 
+		function generate_random_filename()
+	    {
+		    // create a random name
+			$filename = Str::random(20) .'.'. File::extension(Input::file('image.name'));
+
+	    	//Validar si no existe ya ese nombre random el la DB
+		    if (User::where_image($filename)->first()) {
+		    	generate_random_filename();
+		    }
+		    return $filename;
+	    }
+	    $filename = generate_random_filename();
+
+	    //Crear la API_KEY
+	    function createApiKey()
+		{
+			$key = Str::random(32);
+			//Validar si no existe ya ese nombre random el la DB
+		    if (User::where('api_key','=',$key)->first()) {
+		    	createApiKey();
+		    }
+			return $key;
+		}
+		$api_key = createApiKey();
+
 		// Save all in the database
 	    $user = new User($new_user);
+ 		$user->type = $tipo;
 	    $user->image = $filename;
+	    $user->api_key = $api_key;
 	    $user->save(); 
 	    
 	    // start bundle 'resizer'
@@ -111,10 +145,7 @@ class Home_Controller extends Base_Controller {
 	public function post_club()
 	{
 		$Validar_si_tiene_club = Club::where('user_id','=',Auth::user()->id)->first();
-		if ($Validar_si_tiene_club != '') {
-			return Redirect::to_action('home@club')
-                ->with('yaTiene', true);
-		}else{
+		if (is_null($Validar_si_tiene_club)) {
 			$new_club = array(
 		        'name'		=> Input::get('name'),
 		        'description'  => Input::get('description'),
@@ -146,9 +177,19 @@ class Home_Controller extends Base_Controller {
 	                ->with('error_create_club', true);
 		    }
 
-		    // create a random name
-		    $filename = Str::random(20) .'.'. File::extension(Input::file('image.name'));
-				
+			function generate_random_filename()
+		    {
+			    // create a random name
+			    $filename = Str::random(20) .'.'. File::extension(Input::file('image.name'));
+
+		    	//Validar si no existe ya ese nombre random el la DB
+			    if (Restaurant::where_image($filename)->first()) {
+			    	generate_random_filename();
+			    }
+			    return $filename;
+		    }
+		    $filename = generate_random_filename();
+
 			$new_club['user_id'] = Auth::user()->id;
 			// Save all in the database
 		    $user = new Club($new_club);
@@ -168,6 +209,9 @@ class Home_Controller extends Base_Controller {
 			Input::upload('image', 'public/uploads/clubs', $filename);
 
 		    return Redirect::to_action('user@index');
+	    }else{
+    		return Redirect::to_action('home@club')
+            	->with('yaTiene', true);
 	    }
 	}
 
@@ -177,18 +221,14 @@ class Home_Controller extends Base_Controller {
 	}
 	public function post_restaurant()
 	{
-		$Validar_si_tiene_club = Restaurant::where('user_id','=',Auth::user()->id)->first();
-		if ($Validar_si_tiene_club != '') {
-			return Redirect::to_action('home@restaurant')
-                ->with('yaTiene', true);
-		}else{
+		$Validar_si_tiene_restau = Restaurant::where('user_id','=',Auth::user()->id)->first();
+		if (is_null($Validar_si_tiene_restau)) {
 			$new_restaurants = array(
 		        'name'		=> Input::get('name'),
 		        'description'  => Input::get('description'),
 		        'image' => Input::file('image'),
 		        'address'  => Input::get('address'),
 		        'telephone'  => Input::get('telephone'),
-		        'horary'  => Input::get('horary'),
 		        'type'  => Input::get('type')
 	    	);
 	   
@@ -198,7 +238,6 @@ class Home_Controller extends Base_Controller {
 		        'image' => 'required|image|mimes:jpg,png|max:1024',
 		        'address' => 'required',
 		        'telephone' => 'required|numeric',
-		        'horary' => 'required|min:3|max:15',
 		        'type' => 'required|match:/[a-z]+/|min:4|max:15'
 	    	);
 	    
@@ -212,9 +251,19 @@ class Home_Controller extends Base_Controller {
 	                ->with_input('except', array('image'))
 	                ->with('error_create_restaurants', true);
 		    }
-		    // create a random name
-		    $filename = Str::random(20) .'.'. File::extension(Input::file('image.name'));
-	 		
+		    function generate_random_filename()
+		    {
+		   	 	// create a random name
+		    	$filename = Str::random(20) .'.'. File::extension(Input::file('image.name'));
+
+		    	//Validar si no existe ya ese nombre random el la DB
+			    if (Restaurant::where_image($filename)->first()) {
+			    	generate_random_filename();
+			    }
+			    return $filename;
+		    }
+		    $filename = generate_random_filename();
+
 		    $new_restaurants['user_id'] = Auth::user()->id;
 
 			// Save all in the database
@@ -235,6 +284,9 @@ class Home_Controller extends Base_Controller {
 			Input::upload('image', 'public/uploads/restaurants', $filename);
 
 		    return Redirect::to_action('user@index');
+	    }else{
+	    	return Redirect::to_action('home@restaurant')
+                ->with('yaTiene', true);
 	    }
 	}
 

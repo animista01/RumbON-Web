@@ -36,12 +36,16 @@
 			{{ $errors->first('email', Alert::error(":message")) }}
 			{{ Form::text('email', Input::old('email'), array('class' => 'span3', 'placeholder' => 'Email'));}}
 
-			{{ $errors->first('bio', Alert::error(":message")) }}
-			{{ Form::textarea('bio', Input::old('bio'), array('class' => 'span3', 'placeholder' => 'Biografia'));}}
-
 			{{ $errors->first('telephone', Alert::error(":message")) }}
 			{{ Form::text('telephone', Input::old('telephone'), array('class' => 'span3', 'placeholder' => 'Telefono'));}}
 
+			<select name="type" id="type">
+				<optgroup label="Tipo de Usuario">
+				<option value="rumbon">Usuario RumbON</option>
+				<option value="adminDisco">Administrador Discoteca</option>
+				<option value="adminRest">Administrador Restaurante</option>
+			</select>
+			
 			{{ $errors->first('image', Alert::error(":message")) }}
 			{{ Form::file('image'); }}
 

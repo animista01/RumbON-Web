@@ -70,9 +70,9 @@ return array(
 		'mysql' => array(
 			'driver'   => 'mysql',
 			'host'     => '127.0.0.1',
-			'database' => 'rumbon',
+			'database' => '',
 			'username' => 'root',
-			'password' => 'toor',
+			'password' => '',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 		),

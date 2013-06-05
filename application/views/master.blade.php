@@ -51,27 +51,33 @@
                 </li>
               @else
              	<li class="divider-vertical"></li>
-                <li class="dropdown visible-desktop">
-                	<a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                		{{ e(Auth::user()->name) }} 
-                		<strong class="caret"></strong>
-                	</a>
-	               	<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-						        <ul style="list-style: none;">
-				              <li>{{ HTML::link_to_action('user@configUser', 'Configurar Perfil') }}</li>
-			              	<li>{{ HTML::link_to_action('home@logout', 'Salir') }}</li>
-		              	</ul>
-		            </div>
+              <li class="dropdown visible-desktop">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+              		{{ e(Auth::user()->name) }} 
+              		<strong class="caret"></strong>
+              	</a>
+               	<ul class="dropdown-menu" role="menu">
+		              <li>{{ HTML::link_to_action('user@editUser', 'Editar Perfil', array(Auth::user()->id)) }}</li>
+                  @if(Auth::user()->type == 2)
+                    @if(isset(Auth::user()->club->id))
+                    <li>{{ HTML::link_to_action('user@editdisco', 'Editar Discoteca', array(Auth::user()->club->id)) }}</li>
+                    @endif
+                  @elseif(Auth::user()->type == 3)
+                    @if(isset(Auth::user()->restaurant->id))
+                      <li>{{ HTML::link_to_action('user@editrest', 'Editar Restaurante', array(Auth::user()->restaurant->id)) }}</li>
+                    @endif
+                  @endif
+	              	<li>{{ HTML::link_to_action('home@logout', 'Salir') }}</li>
+	              </ul>
 	          	</li>
               @endif
             </ul>
             <ul class="nav">
               @if (Auth::guest())
-                <li class="active"><a href="{{URL::base();}}">Inicio</a></li>
-              @endif
-              @if (!Auth::guest())
-              <li class="active"><a href="{{URL::base();}}/user/index">Inicio</a></li>
-                <li>{{ HTML::link_to_action('user@profile', "Perfil") }} </li>
+                <li class="active"><a id="aInicioInvitado" href="{{URL::base();}}">Inicio</a></li>
+              @else
+                <li><a href="{{URL::base();}}/user/index">Inicio</a><li>
+                <li>{{ HTML::link_to_action('user@profile', "Perfil") }}</li>
               @endif
             </ul>
           </div><!--/.nav-collapse -->
@@ -83,7 +89,11 @@
         @yield('content')
       </div>
     </div>
+    <div class="container">
+      @yield('contentshow')
+    </div>
   {{ Asset::container('bootstrapper')->scripts(); }}
+  {{ HTML::script('js/codigo.js') }}
   @section('scripts')
   @yield_section
 </body>

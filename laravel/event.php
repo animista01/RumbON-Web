@@ -1,7 +1,7 @@
 <?php namespace Laravel;
 
 class Event {
-
+	
 	/**
 	 * All of the registered events.
 	 *

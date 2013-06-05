@@ -12,4 +12,9 @@ class User extends Eloquent
 	{
 	    return $this->has_one('Restaurant');
 	}
+
+	public function gos()
+	{
+		return $this->has_many('Go');	
+	}
 }
