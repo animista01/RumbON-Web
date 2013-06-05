@@ -35,3 +35,7 @@ dwsync.xml
 intermediate
 publish
 .idea
+
+# Laravel
+application/config/application.php
+application/config/database.php
