@@ -37,4 +37,5 @@ publish
 .idea
 
 # Laravel
-application/config/local/*
+application/config/application.php
+application/config/database.php
