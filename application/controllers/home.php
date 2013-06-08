@@ -105,7 +105,7 @@ class Home_Controller extends Base_Controller {
 		$img = Input::file('image');
 		
 		$success = Resizer::open($img)
-			->resize(120 , 120 , 'auto' )
+			->resize(160 , 160 , 'auto' )
 			->save('public/uploads/thumbnails/users/'.$filename , 100 );
 
 		// move uploaded file to public/uploads
@@ -202,7 +202,7 @@ class Home_Controller extends Base_Controller {
 			$img = Input::file('image');
 			
 			$success = Resizer::open($img)
-				->resize(120 , 120 , 'auto' )
+				->resize(160 , 160 , 'auto' )
 				->save('public/uploads/thumbnails/clubs/'.$filename , 100 );
 
 			// move uploaded file to public/uploads
@@ -277,7 +277,7 @@ class Home_Controller extends Base_Controller {
 			$img = Input::file('image');
 			
 			$success = Resizer::open($img)
-				->resize(120 , 120 , 'auto' )
+				->resize(160 , 160 , 'auto' )
 				->save('public/uploads/thumbnails/restaurants/'.$filename , 100 );
 
 			// move uploaded file to public/uploads
