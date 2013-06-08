@@ -38,3 +38,10 @@ publish
 
 # Laravel
 application/config/local/*
+public/uploads/clubs/promotions/*
+public/uploads/clubs/
+public/uploads/restaurants/*
+public/uploads/thumbnails/clubs/promotions/*
+public/uploads/thumbnails/restaurants/*
+public/uploads/thumbnails/users/*
+public/uploads/users/*
